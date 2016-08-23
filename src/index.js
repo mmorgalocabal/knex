@@ -9,6 +9,9 @@ import parseConnection from './util/parse-connection';
 
 import { assign } from 'lodash'
 
+import clientSQLite3 from './dialects/sqlite3';
+
+
 // The client names we'll allow in the `{name: lib}` pairing.
 const aliases = {
   'mariadb'   : 'maria',
@@ -29,7 +32,7 @@ export default function Knex(config) {
     Dialect = makeClient(config.client)
   } else {
     const clientName = config.client || config.dialect
-    Dialect = makeClient(require(`./dialects/${aliases[clientName] || clientName}/index.js`))
+    Dialect = makeClient(clientSQLite3)
   }
   if (typeof config.connection === 'string') {
     config = assign({}, config, {connection: parseConnection(config.connection).connection})
